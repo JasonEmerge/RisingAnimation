@@ -72,22 +72,22 @@
   body.done #hero{position:static;height:var(--settled-h)}
   body.done #content{position:static;transform:none;visibility:visible;transition:none}
 
-  .wrap{max-width:640px;margin:0 auto;padding:34px 26px calc(var(--nav-h) + 46px)}
+  .wrap{max-width:640px;margin:0 auto;padding:34px 24px calc(var(--nav-h) + env(safe-area-inset-bottom) + 72px)}
 
   .eyebrow{display:flex;align-items:center;gap:14px;justify-content:center;
-    color:var(--champagne);font-size:14px;letter-spacing:.42em;text-transform:uppercase;
-    font-family:'Cormorant Garamond',serif;font-weight:600;padding-left:.42em}
-  .eyebrow::before,.eyebrow::after{content:"";flex:0 0 54px;height:1px;
+    color:var(--champagne);font-size:18px;letter-spacing:.38em;text-transform:uppercase;
+    font-family:'Cormorant Garamond',serif;font-weight:600;padding-left:.38em}
+  .eyebrow::before,.eyebrow::after{content:"";flex:0 0 44px;height:1px;
     background:linear-gradient(90deg,transparent,var(--hairline));}
   .eyebrow::after{background:linear-gradient(90deg,var(--hairline),transparent)}
   .eyebrow .dot{font-size:9px;color:var(--gold);letter-spacing:0;padding:0}
 
   h1{font-family:'Cormorant Garamond',serif;font-weight:600;color:var(--champagne);
-    text-align:center;font-size:clamp(38px,11vw,54px);letter-spacing:.10em;
-    margin:10px 0 2px;padding-left:.10em;text-shadow:0 0 26px rgba(233,215,174,.18)}
+    text-align:center;font-size:44px;line-height:1.05;letter-spacing:.10em;
+    margin:10px 0 4px;padding-left:.10em;text-shadow:0 0 26px rgba(233,215,174,.18)}
   .subtitle{display:flex;align-items:center;justify-content:center;gap:10px;
     font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:500;
-    color:var(--champagne);font-size:clamp(20px,5.6vw,26px)}
+    color:var(--champagne);font-size:23px}
   .subtitle .orn{color:var(--gold);font-style:normal;font-size:.62em;transform:translateY(1px)}
   .head-rule{width:min(320px,72%);margin:20px auto 0;height:12px;position:relative}
   .head-rule::before{content:"";position:absolute;left:0;right:0;top:5px;height:1px;
@@ -97,10 +97,10 @@
 
   section{margin-top:42px}
   h2{font-family:'Cormorant Garamond',serif;font-weight:700;color:var(--gold);
-    font-size:19px;letter-spacing:.20em;text-transform:uppercase;margin-bottom:16px}
-  p{font-size:17.5px;line-height:1.62;color:var(--ivory);margin-bottom:16px;
+    font-size:24px;line-height:1.25;letter-spacing:.14em;text-transform:uppercase;margin-bottom:16px}
+  .reading-copy p{font-size:20px;line-height:1.6;color:var(--ivory);margin-bottom:18px;
     text-shadow:0 1px 2px rgba(0,0,0,.5)}
-  p:last-child{margin-bottom:0}
+  .reading-copy p:last-child{margin-bottom:0}
   .divider{margin:40px auto 0;width:100%;height:12px;position:relative}
   .divider::before{content:"";position:absolute;left:0;right:0;top:5px;height:1px;
     background:linear-gradient(90deg,transparent,var(--hairline) 20%,var(--hairline) 80%,transparent)}
@@ -165,24 +165,21 @@
     <div class="subtitle"><span class="orn">❧</span><span id="subTitle">Your Inner Compass</span><span class="orn" style="transform:scaleX(-1) translateY(1px)">❧</span></div>
     <div class="head-rule"></div>
 
-    <section>
-      <h2>The Essence of You</h2>
-      <p id="essenceShared"></p>
-      <p id="essenceSign"></p>
-    </section>
-    <div class="divider"></div>
-
-    <section>
-      <h2>Your Dharmic Path</h2>
-      <p id="dharmaShared"></p>
-      <p id="dharmaSign"></p>
-    </section>
-    <div class="divider"></div>
-
-    <section>
+    <section class="reading-section">
       <h2>Sidereal Perspective</h2>
-      <p id="siderealA"></p>
-      <p id="siderealB"></p>
+      <div id="secSidereal" class="reading-copy"></div>
+    </section>
+    <div class="divider"></div>
+
+    <section class="reading-section">
+      <h2>The Essence of You</h2>
+      <div id="secEssence" class="reading-copy"></div>
+    </section>
+    <div class="divider"></div>
+
+    <section class="reading-section">
+      <h2>Your Dharmic Path</h2>
+      <div id="secDharma" class="reading-copy"></div>
     </section>
   </div>
 </div>
@@ -195,7 +192,7 @@
   <a href="#"><svg viewBox="0 0 24 24"><circle cx="12" cy="8.5" r="3.5"/><path d="M5 19.5c1.2-3.4 3.9-5 7-5s5.8 1.6 7 5"/></svg>Account</a>
 </nav>
 
-<div id="stamp">ASCENDANT · v2.3 · even 3s swell</div>
+<div id="stamp">ASCENDANT · v3.0 · lagna framework</div>
 
 <script>
 /* =====================================================================
@@ -216,72 +213,169 @@
    ===================================================================== */
 
 const SHARED = {
-  essence: "In Vedic astrology, your Ascendant is not simply how you appear to others\u2014it is the doorway into your life. It describes the energy your soul naturally expresses, the path you instinctively follow, and the qualities you are here to develop.",
-  dharma: "Every Ascendant carries a unique Dharma\u2014a natural direction the soul is learning to embody.",
-  siderealA: "Unlike Tropical astrology, which often describes how your personality is expressed in the outer world, Sidereal astrology begins with the soul's orientation. Your Ascendant reveals the inner compass guiding your life's journey\u2014the deeper current beneath your choices, relationships, and experiences.",
-  siderealB: "It is less about who you appear to be, and more about who you are becoming."
+  sidereal: [
+    "In Sidereal Vedic astrology, the Ascendant\u2014or Lagna\u2014is the starting point of your entire birth chart. It establishes the twelve houses and determines which planet becomes the ruler of your chart.",
+    "Rather than simply describing how you appear or express your personality, the Lagna reveals the orientation of your life: the path through which your experiences unfold, the qualities life continually asks you to develop, and the direction through which your Dharma takes form.",
+    "Your Lagna is the ground from which the rest of your chart is read."
+  ]
 };
 
 const SIGNS = {
   aries: {
-    title: "ARIES RISING", loop: false,
-    essence: "Aries Rising brings a bold, direct, and pioneering nature. You move through life by initiating rather than waiting. Courage, independence, and fresh beginnings become guiding themes, and your greatest strength is the willingness to act first, opening doors that others hesitate to approach and clearing a path they can follow.",
-    dharma: "With Aries Rising, your path is to lead through courage rather than force. You are here to refine raw instinct into clear purpose, learn patience without losing your fire, and discover that true victory uplifts everyone involved. As you master your own impulses, you naturally become an igniter of confidence in others."
+    title: "ARIES RISING", loop: false, ruler: "Mars",
+    essence: [
+      "With Aries Rising, Mars becomes the ruler of your chart.",
+      "This places themes of initiative, courage, effort, and independent action at the center of your development. Life repeatedly asks you to begin things, to act before certainty arrives, and to learn the difference between force that scatters and effort that is aimed.",
+      "Aries Lagna develops through disciplined engagement. At its strongest, this is not aggression or restlessness. It is the capacity to commit fully, to meet resistance without losing direction, and to act cleanly on behalf of what you have decided matters."
+    ],
+    dharma: [
+      "Your Dharma is not simply to act. It is to learn what is worth your effort.",
+      "With Mars governing your chart, your path involves developing command over your own energy, when to advance, when to hold, and when to let a battle pass. Life may repeatedly place you at thresholds that ask for decision, courage, or the willingness to go first.",
+      "The deeper lesson of Aries Lagna is mastered will: learning that true strength is not proven by conquest, but by the ability to direct your force with clarity, restraint, and purpose."
+    ]
   },
   taurus: {
-    title: "TAURUS RISING", loop: false,
-    essence: "Taurus Rising brings a steady, grounded, and quietly magnetic nature. You move through life by building rather than rushing. Stability, beauty, and lasting value become guiding themes, and your greatest strength is creating comfort and permanence, turning whatever you touch into something reliable, nourishing, and genuinely worth keeping.",
-    dharma: "With Taurus Rising, your path is to grow through devotion rather than attachment. You are here to cultivate patience, honor the natural pace of things, and discover that security ultimately lives within you. As you learn when to hold on and when to release, you naturally become a calming anchor for others."
+    title: "TAURUS RISING", loop: false, ruler: "Venus",
+    essence: [
+      "With Taurus Rising, Venus becomes the ruler of your chart.",
+      "This places themes of value, stability, resources, and the capacity to sustain at the center of your development. Life repeatedly asks you to determine what is truly worth keeping, building, and tending, and to distinguish comfort that nourishes from comfort that confines.",
+      "Taurus Lagna develops through steady cultivation. At its strongest, this is not possessiveness or resistance to change. It is the ability to give form to what has worth, to remain constant through time, and to create conditions in which life can take root and grow."
+    ],
+    dharma: [
+      "Your Dharma is not simply to accumulate. It is to understand what deserves to endure.",
+      "With Venus governing your chart, your path involves refining your relationship to worth itself, material, relational, and inner. Life may repeatedly ask you to build slowly, to hold steady while others waver, or to release what you have outgrown despite its familiarity.",
+      "The deeper lesson of Taurus Lagna is rooted value: learning that security is not found in holding on, but in becoming a person through whom stability, beauty, and substance reliably take form."
+    ]
   },
   gemini: {
-    title: "GEMINI RISING", loop: false,
-    essence: "Gemini Rising brings a curious, quick, and endlessly adaptable nature. You move through life by learning rather than settling. Ideas, connection, and exchange become guiding themes, and your greatest strength is translating between worlds, finding the words, questions, and perspectives that help people understand each other and themselves.",
-    dharma: "With Gemini Rising, your path is to seek depth rather than distraction. You are here to gather knowledge and shape it into wisdom, listen as skillfully as you speak, and discover that focus multiplies your gifts. As your many interests find their center, you naturally become a bridge between people and ideas."
+    title: "GEMINI RISING", loop: false, ruler: "Mercury",
+    essence: [
+      "With Gemini Rising, Mercury becomes the ruler of your chart.",
+      "This places themes of perception, learning, language, and exchange at the center of your development. Life repeatedly asks you to gather, connect, and translate, and to discover the difference between information that scatters attention and understanding that organizes it.",
+      "Gemini Lagna develops through refined intelligence. At its strongest, this is not cleverness or endless variety. It is the capacity to listen precisely, to name things truly, and to carry understanding between people and worlds that could not otherwise meet."
+    ],
+    dharma: [
+      "Your Dharma is not simply to know. It is to make understanding useful.",
+      "With Mercury governing your chart, your path involves training the mind itself, its speech, its attention, its honesty. Life may repeatedly place you where words matter, where a message must be carried, or where two sides need someone who can hear both.",
+      "The deeper lesson of Gemini Lagna is integrated mind: learning that intelligence matures not by collecting more, but by choosing what to serve with what you know."
+    ]
   },
   cancer: {
-    title: "CANCER RISING", loop: false,
-    essence: "Cancer Rising brings a deeply intuitive, nurturing, and emotionally aware nature. You move through life by sensing rather than forcing. Home, belonging, family, and emotional security become guiding themes, and your greatest strength is creating spaces where people feel protected, understood, and genuinely cared for.",
-    dharma: "With Cancer Rising, your path is to lead through compassion rather than control. You are here to cultivate emotional wisdom, trust your intuition, and discover that true strength often comes through gentleness. As you create safety for yourself, you naturally become a source of comfort, healing, and stability for others."
+    title: "CANCER RISING", loop: false, ruler: "Moon",
+    essence: [
+      "With Cancer Rising, the Moon becomes the ruler of your chart.",
+      "This places themes of feeling, memory, care, and belonging at the center of your development. Life repeatedly asks you to attend to what needs protection, your own inner life included, and to learn the difference between care that strengthens and care that clings.",
+      "Cancer Lagna develops through emotional maturity. At its strongest, this is not moodiness or dependence. It is the capacity to remain receptive without being overwhelmed, to hold others steadily, and to make wherever you are a place where life is nourished."
+    ],
+    dharma: [
+      "Your Dharma is not simply to care. It is to become a source of shelter that does not lose itself.",
+      "With the Moon governing your chart, your path involves learning to work with the tides of your own feeling, honoring them without being ruled by them. Life may repeatedly place you where someone or something needs holding, a family, a home, a lineage, an inner life.",
+      "The deeper lesson of Cancer Lagna is rooted compassion: learning that true nurturing flows from a settled heart, and that the protection you offer others begins in the sanctuary you build within."
+    ]
   },
   leo: {
-    title: "LEO RISING", loop: false,
-    essence: "Leo Rising brings a warm, radiant, and naturally commanding nature. You move through life by inspiring rather than following. Creativity, dignity, and wholehearted expression become guiding themes, and your greatest strength is the light you carry into every room, reminding people of their own courage, beauty, and worth.",
-    dharma: "With Leo Rising, your path is to lead through generosity rather than recognition. You are here to develop authentic confidence, create from the heart, and discover that true royalty serves what it rules. As your light turns outward to warm others, you naturally become a source of encouragement and strength."
+    title: "LEO RISING", loop: false, ruler: "Sun",
+    essence: [
+      "With Leo Rising, the Sun becomes the ruler of your chart.",
+      "This places themes of identity, purpose, integrity, visibility, and self-authority at the center of your development. Life repeatedly asks you to discover what is genuinely yours to stand behind\u2014not simply where you receive attention, but where you are willing to take responsibility for what you represent.",
+      "Leo Lagna develops through learning to occupy its own center. At its strongest, this is not performance or the need to be admired. It is the ability to act with conviction, remain connected to the heart, and become someone whose presence carries direction."
+    ],
+    dharma: [
+      "Your Dharma is not simply to shine. It is to understand what your light is for.",
+      "With the Sun governing your chart, your path involves developing an inner authority that does not depend upon applause, status, or recognition. Life may repeatedly place you in situations that ask you to lead, create, decide, or stand visibly behind something that matters to you.",
+      "The deeper lesson of Leo Lagna is sovereignty with purpose: learning that genuine authority comes from knowing yourself, governing yourself, and using what you have been given in service of something larger than your own recognition."
+    ]
   },
   virgo: {
-    title: "VIRGO RISING", loop: false,
-    essence: "Virgo Rising brings a precise, thoughtful, and quietly devoted nature. You move through life by refining rather than accepting. Service, clarity, and craftsmanship become guiding themes, and your greatest strength is seeing what others miss, gently bringing order, healing, and improvement to everything and everyone you care for.",
-    dharma: "With Virgo Rising, your path is to serve through love rather than perfection. You are here to master discernment without harshness, offer your skill where it truly helps, and discover that wholeness matters more than flawlessness. As you grow gentler with yourself, you naturally become a healing presence for others."
+    title: "VIRGO RISING", loop: false, ruler: "Mercury",
+    essence: [
+      "With Virgo Rising, Mercury becomes the ruler of your chart.",
+      "This places themes of discernment, refinement, service, and right order at the center of your development. Life repeatedly asks you to notice what others overlook, to improve what is entrusted to you, and to learn the difference between standards that serve and perfectionism that corrodes.",
+      "Virgo Lagna develops through purification of effort. At its strongest, this is not criticism or anxiety over detail. It is the capacity to work with precision and humility, to heal what is disordered, and to offer skill where it genuinely helps."
+    ],
+    dharma: [
+      "Your Dharma is not simply to improve things. It is to learn what your skill is in service of.",
+      "With Mercury governing your chart, your path involves refining both craft and mind, and accepting that useful work done faithfully is a spiritual act. Life may repeatedly place you where something is broken, inefficient, or unwell and hand you the task of setting it right.",
+      "The deeper lesson of Virgo Lagna is sacred usefulness: learning that wholeness is not the absence of flaws, but the willingness to serve life exactly as you find it, with everything you have refined."
+    ]
   },
   libra: {
-    title: "LIBRA RISING", loop: true,
-    essence: "Libra Rising brings a graceful, fair, and relationship-centered nature. You move through life by harmonizing rather than dominating. Balance, beauty, and partnership become guiding themes, and your greatest strength is restoring peace, sensing what each moment needs and drawing people toward understanding, cooperation, and genuine connection.",
-    dharma: "With Libra Rising, your path is to create harmony rather than avoid conflict. You are here to develop inner balance, choose truth alongside kindness, and discover that real peace sometimes requires a courageous stand. As you find your own center, you naturally become a unifying force in every relationship."
+    title: "LIBRA RISING", loop: true, ruler: "Venus",
+    essence: [
+      "With Libra Rising, Venus becomes the ruler of your chart.",
+      "This places themes of relationship, fairness, balance, and harmony at the center of your development. Life repeatedly asks you to meet the other, in partnership, in negotiation, in beauty, and to learn the difference between peace that is real and peace that is purchased by self-erasure.",
+      "Libra Lagna develops through conscious relationship. At its strongest, this is not people-pleasing or indecision. It is the capacity to weigh truly, to honor both sides without abandoning your own, and to create accord that everyone involved can stand inside."
+    ],
+    dharma: [
+      "Your Dharma is not simply to keep the peace. It is to learn what justice asks of you.",
+      "With Venus governing your chart, your path involves developing an inner scale, a center that holds while you meet other people's needs, views, and desires. Life may repeatedly place you between parties, in partnerships that shape you, or before choices where fairness costs something.",
+      "The deeper lesson of Libra Lagna is balanced truth: learning that real harmony is built, not avoided into, and that the steadiest peace comes from a person who has found their own center first."
+    ]
   },
   scorpio: {
-    title: "SCORPIO RISING", loop: false,
-    essence: "Scorpio Rising brings an intense, perceptive, and deeply private nature. You move through life by penetrating rather than skimming the surface. Truth, transformation, and emotional depth become guiding themes, and your greatest strength is the power to face what others avoid, emerging from every trial stronger and wiser.",
-    dharma: "With Scorpio Rising, your path is to transform through trust rather than control. You are here to master your own depths, release what no longer serves you, and discover that vulnerability is a form of power. As you rise renewed from each passage, you naturally become a guide through others' darkness."
+    title: "SCORPIO RISING", loop: false, ruler: "Mars",
+    essence: [
+      "With Scorpio Rising, Mars becomes the ruler of your chart.",
+      "This places themes of depth, transformation, power, and truth beneath appearances at the center of your development. Life repeatedly asks you to enter what others avoid, endings, intensities, hidden dynamics, and to learn the difference between control and genuine strength.",
+      "Scorpio Lagna develops through deliberate transformation. At its strongest, this is not suspicion or force. It is the capacity to face what is real, to let what must die be released, and to emerge from each passage with power that is quieter and cleaner than before."
+    ],
+    dharma: [
+      "Your Dharma is not simply to survive change. It is to become someone change refines.",
+      "With Mars governing your chart, your path involves courage turned inward, the willingness to confront your own depths with the same intensity you bring to the world. Life may repeatedly place you at points of crisis, healing, or profound change where something must be released for something truer to live.",
+      "The deeper lesson of Scorpio Lagna is regenerative power: learning that what you are willing to face honestly loses its power over you, and becomes power that moves through you."
+    ]
   },
   sagittarius: {
-    title: "SAGITTARIUS RISING", loop: false,
-    essence: "Sagittarius Rising brings an optimistic, adventurous, and truth-seeking nature. You move through life by aiming rather than wandering. Meaning, freedom, and higher understanding become guiding themes, and your greatest strength is the faith you carry forward, lifting people's eyes toward possibility and the larger purpose behind their lives.",
-    dharma: "With Sagittarius Rising, your path is to teach through living rather than preaching. You are here to pursue wisdom with humility, honor the truth within every tradition, and discover that the journey itself is the destination. As your vision matures, you naturally become a guide who inspires others onward."
+    title: "SAGITTARIUS RISING", loop: false, ruler: "Jupiter",
+    essence: [
+      "With Sagittarius Rising, Jupiter becomes the ruler of your chart.",
+      "This places themes of meaning, truth, faith, and expansion at the center of your development. Life repeatedly asks you to seek what is larger than circumstance, and to learn the difference between belief that is inherited and truth that has been lived.",
+      "Sagittarius Lagna develops through tested wisdom. At its strongest, this is not preaching or restlessness. It is the capacity to hold conviction with humility, to keep faith through uncertainty, and to point toward purpose in a way that lifts the people around you."
+    ],
+    dharma: [
+      "Your Dharma is not simply to seek truth. It is to live in a way that demonstrates it.",
+      "With Jupiter governing your chart, your path involves growing from student to guide, letting philosophy become conduct. Life may repeatedly place you before questions of meaning, ethics, teaching, or the long journey between what you believe and what you do.",
+      "The deeper lesson of Sagittarius Lagna is embodied wisdom: learning that truth matures only when it is carried, and that the most persuasive teaching is a life aligned with what it claims."
+    ]
   },
   capricorn: {
-    title: "CAPRICORN RISING", loop: false,
-    essence: "Capricorn Rising brings a disciplined, patient, and quietly ambitious nature. You move through life by climbing rather than leaping. Mastery, responsibility, and enduring achievement become guiding themes, and your greatest strength is the persistence to keep building when others stop, creating things that stand the test of time.",
-    dharma: "With Capricorn Rising, your path is to achieve through integrity rather than pressure. You are here to carry responsibility with grace, allow softness alongside strength, and discover that time is your ally rather than your judge. As you honor your own pace, you naturally become a mountain others can lean on."
+    title: "CAPRICORN RISING", loop: false, ruler: "Saturn",
+    essence: [
+      "With Capricorn Rising, Saturn becomes the ruler of your chart.",
+      "This places themes of responsibility, structure, time, and earned mastery at the center of your development. Life repeatedly asks you to carry weight, to build what lasts, and to learn the difference between duty that shapes you and burden that hardens you.",
+      "Capricorn Lagna develops through patient construction. At its strongest, this is not coldness or mere ambition. It is the capacity to work with time rather than against it, to keep commitments through difficulty, and to become a structure other lives can safely rest upon."
+    ],
+    dharma: [
+      "Your Dharma is not simply to achieve. It is to become worthy of what you are given to carry.",
+      "With Saturn governing your chart, your path involves maturity taken up willingly, discipline, integrity, and the long labor of building character. Life may repeatedly place responsibility in your hands early, test your endurance, or ask you to lead precisely where there is no shortcut.",
+      "The deeper lesson of Capricorn Lagna is earned authority: learning that what is built slowly and honestly cannot be taken from you, and that time is the instrument of your Dharma, not its obstacle."
+    ]
   },
   aquarius: {
-    title: "AQUARIUS RISING", loop: true,
-    essence: "Aquarius Rising brings an original, visionary, and humanitarian nature. You move through life by questioning rather than conforming. Innovation, community, and the greater good become guiding themes, and your greatest strength is seeing what could be, carrying ideas from the future into the present for the benefit of all.",
-    dharma: "With Aquarius Rising, your path is to belong without losing yourself. You are here to honor your uniqueness, connect your vision to real human needs, and discover that the heart matters as much as the idea. As you bring warmth to your brilliance, you naturally become a light for collective change."
+    title: "AQUARIUS RISING", loop: true, ruler: "Saturn",
+    essence: [
+      "With Aquarius Rising, Saturn becomes the ruler of your chart.",
+      "This places themes of principle, detachment, the collective, and long vision at the center of your development. Life repeatedly asks you to stand slightly apart in order to see clearly, and to learn the difference between distance that clarifies and distance that isolates.",
+      "Aquarius Lagna develops through disciplined ideals. At its strongest, this is not rebellion or aloofness. It is the capacity to serve principles patiently, to think beyond your own moment, and to hold steady commitments to things larger than personal comfort."
+    ],
+    dharma: [
+      "Your Dharma is not simply to be different. It is to be useful to the whole.",
+      "With Saturn governing your chart, your path involves binding vision to structure, giving your ideals the discipline they need to become real. Life may repeatedly place you where systems, communities, or shared futures need someone willing to work without immediate reward.",
+      "The deeper lesson of Aquarius Lagna is principled service: learning that true freedom is not separation from others, but the strength to carry responsibility for what benefits many beyond yourself."
+    ]
   },
   pisces: {
-    title: "PISCES RISING", loop: true,
-    essence: "Pisces Rising brings a gentle, imaginative, and deeply compassionate nature. You move through life by feeling rather than analyzing. Empathy, creativity, and spiritual connection become guiding themes, and your greatest strength is dissolving the walls between people, sensing the unspoken and offering understanding where the world offers judgment.",
-    dharma: "With Pisces Rising, your path is to serve through compassion rather than sacrifice. You are here to develop healthy boundaries, give form to your visions, and discover that sensitivity is strength when it is anchored. As you learn to stay present, you naturally become a sanctuary for weary hearts."
+    title: "PISCES RISING", loop: true, ruler: "Jupiter",
+    essence: [
+      "With Pisces Rising, Jupiter becomes the ruler of your chart.",
+      "This places themes of faith, compassion, surrender, and the dissolving of boundaries at the center of your development. Life repeatedly asks you to trust what cannot be measured, and to learn the difference between openness that connects and openness that dissolves you.",
+      "Pisces Lagna develops through anchored devotion. At its strongest, this is not escapism or formless sensitivity. It is the capacity to remain compassionate without being consumed, to give imagination a form, and to let faith function as a discipline rather than a refuge."
+    ],
+    dharma: [
+      "Your Dharma is not simply to feel deeply. It is to give what you receive a shape the world can use.",
+      "With Jupiter governing your chart, your path involves wisdom expressed as compassion, and compassion held within boundaries that keep it whole. Life may repeatedly place you where suffering, longing, or the unseen ask for a witness, and where your task is to serve without disappearing.",
+      "The deeper lesson of Pisces Lagna is embodied grace: learning that transcendence is not leaving the world behind, but bringing what is boundless into faithful, human form."
+    ]
   }
 };
 
@@ -300,12 +394,14 @@ const S = SIGNS[sign];
 
 /* ---------- populate template ---------- */
 document.getElementById('signTitle').textContent = S.title;
-document.getElementById('essenceShared').textContent = SHARED.essence;
-document.getElementById('essenceSign').textContent  = S.essence;
-document.getElementById('dharmaShared').textContent = SHARED.dharma;
-document.getElementById('dharmaSign').textContent   = S.dharma;
-document.getElementById('siderealA').textContent    = SHARED.siderealA;
-document.getElementById('siderealB').textContent    = SHARED.siderealB;
+function fillSection(id, paragraphs){
+  const el = document.getElementById(id);
+  el.innerHTML = '';
+  paragraphs.forEach(t => { const p = document.createElement('p'); p.textContent = t; el.appendChild(p); });
+}
+fillSection('secSidereal', SHARED.sidereal);
+fillSection('secEssence', S.essence);
+fillSection('secDharma', S.dharma);
 
 /* ---------- elements ---------- */
 const shell   = document.getElementById('shell');
