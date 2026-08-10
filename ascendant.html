@@ -44,7 +44,7 @@
 
   /* ---------- transition + black beat ---------- */
   #transit{position:fixed;inset:0;z-index:55;background:#000;display:none;
-    transition:opacity .6s ease}
+    transition:opacity .4s ease}
   #transit.fading{opacity:0}
   #transit.on{display:block}
   #transit video{width:100%;height:100%;object-fit:cover;display:block}
@@ -61,8 +61,8 @@
     transform-origin:center 46%;
     transition:opacity .9s ease}
   #hero.playing video{opacity:1}
-  #hero.bloom video{transform:scale(.10);
-    transition:opacity .8s ease, transform 1.6s cubic-bezier(.16,.72,.24,1)}
+  #hero.bloom video{transform:scale(.06);
+    transition:opacity .5s ease, transform 1.5s cubic-bezier(.18,.68,.26,1)}
   #hero.bloom.grown video{transform:scale(1)}
 
   /* ---------- rising content panel ---------- */
@@ -195,7 +195,7 @@
   <a href="#"><svg viewBox="0 0 24 24"><circle cx="12" cy="8.5" r="3.5"/><path d="M5 19.5c1.2-3.4 3.9-5 7-5s5.8 1.6 7 5"/></svg>Account</a>
 </nav>
 
-<div id="stamp">ASCENDANT · v1.6 · emerge bloom</div>
+<div id="stamp">ASCENDANT · v1.7 · born at the flash</div>
 
 <script>
 /* =====================================================================
@@ -368,9 +368,13 @@ function playTransition(){
   // the center light as the dust converges — no cut, no black pause
   const arm = once(() => {
     const d = (tVid.duration && isFinite(tVid.duration)) ? tVid.duration : 2;
-    setTimeout(() => playSign(true), d * 550);            // bloom begins at ~55%
-    setTimeout(() => transit.classList.add('fading'), d * 700);
-    setTimeout(() => { transit.classList.remove('on'); transit.classList.remove('fading'); }, d * 1000 + 700);
+    // at the center-light flash: dust fades away revealing the sign already
+    // born tiny inside the light, growing to full screen over 1.5s
+    setTimeout(() => {
+      playSign(true);
+      transit.classList.add('fading');
+    }, d * 760);
+    setTimeout(() => { transit.classList.remove('on'); transit.classList.remove('fading'); }, d * 760 + 500);
   });
   tVid.addEventListener('loadedmetadata', arm);
   if (tVid.readyState >= 1) arm();
