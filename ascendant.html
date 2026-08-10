@@ -56,7 +56,7 @@
   #hero{position:fixed;top:0;left:0;right:0;height:100dvh;z-index:20;background:#000;
     display:flex;align-items:center;justify-content:center;overflow:hidden;
     will-change:height;transition:none}
-  #hero.settling{transition:height 2.3s cubic-bezier(.22,.61,.21,1)}
+  #hero.settling{transition:height 1.4s cubic-bezier(.22,.61,.21,1)}
   #heroScale{width:100%;height:100%;transform-origin:center 46%;will-change:transform}
   #hero video{width:100%;height:100%;object-fit:contain;display:block;opacity:0;
     transition:opacity .9s ease}
@@ -68,7 +68,7 @@
   /* ---------- rising content panel ---------- */
   #content{position:fixed;top:0;left:0;right:0;z-index:19;background:var(--bg);
     transform:translateY(100dvh);will-change:transform;visibility:hidden}
-  #content.rising{visibility:visible;transition:transform 2.3s cubic-bezier(.22,.61,.21,1)}
+  #content.rising{visibility:visible;transition:transform 1.4s cubic-bezier(.22,.61,.21,1)}
   body.done #hero{position:static;height:var(--settled-h)}
   body.done #content{position:static;transform:none;visibility:visible;transition:none}
 
@@ -192,7 +192,7 @@
   <a href="#"><svg viewBox="0 0 24 24"><circle cx="12" cy="8.5" r="3.5"/><path d="M5 19.5c1.2-3.4 3.9-5 7-5s5.8 1.6 7 5"/></svg>Account</a>
 </nav>
 
-<div id="stamp">ASCENDANT · v3.1 · seamless rise</div>
+<div id="stamp">ASCENDANT · v3.2 · rise at five</div>
 
 <script>
 /* =====================================================================
@@ -513,7 +513,7 @@ function scheduleSettle(){
     sVid.addEventListener('ended', settle, { once:true }); // backup if timeupdate lags
     // the page begins rising while the final pose is still completing — seamless
     sVid.addEventListener('timeupdate', function te(){
-      if (sVid.currentTime >= dur - 0.6){
+      if (sVid.currentTime >= dur - 1.0){
         sVid.removeEventListener('timeupdate', te);
         settle();
       }
