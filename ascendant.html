@@ -195,7 +195,7 @@
   <a href="#"><svg viewBox="0 0 24 24"><circle cx="12" cy="8.5" r="3.5"/><path d="M5 19.5c1.2-3.4 3.9-5 7-5s5.8 1.6 7 5"/></svg>Account</a>
 </nav>
 
-<div id="stamp">ASCENDANT · v1.9 · slow birth</div>
+<div id="stamp">ASCENDANT · v2.1 · slow birth live</div>
 
 <script>
 /* =====================================================================
@@ -364,27 +364,21 @@ function playTransition(){
   const fallback = once(() => { transit.classList.remove('on'); blackBeatThenPlay(300); });
   tVid.addEventListener('error', fallback);
 
-  // don't start until the page-turn can actually play — first loads on cell
-  // data were skipping the whole seam
-  const begin = once(() => {
+  // 2s turn -> freeze ON the center light -> hold -> birth as the 3rd second turns
+  const onTU = () => {
     const d = (tVid.duration && isFinite(tVid.duration)) ? tVid.duration : 2;
-    tVid.play().catch(fallback);
-    // 2s turn -> freeze ON the center light -> hold -> birth as the 3rd second turns
-    const onTU = () => {
-      if (tVid.currentTime >= d * 0.76){
-        tVid.removeEventListener('timeupdate', onTU);
-        tVid.pause();                                // frozen on the flash
-        setTimeout(() => {
-          playSign(true);                            // born tiny in the light
-          transit.classList.add('fading');
-          setTimeout(() => { transit.classList.remove('on'); transit.classList.remove('fading'); }, 500);
-        }, 900);
-      }
-    };
-    tVid.addEventListener('timeupdate', onTU);
-  });
-  if (tVid.readyState >= 3) begin();
-  else tVid.addEventListener('canplay', begin);
+    if (tVid.currentTime >= d * 0.76){
+      tVid.removeEventListener('timeupdate', onTU);
+      tVid.pause();                                  // frozen on the flash
+      setTimeout(() => {
+        playSign(true);                              // born tiny in the light
+        transit.classList.add('fading');
+        setTimeout(() => { transit.classList.remove('on'); transit.classList.remove('fading'); }, 500);
+      }, 900);
+    }
+  };
+  tVid.addEventListener('timeupdate', onTU);
+  tVid.play().catch(fallback);
   setTimeout(() => { if (!hero.classList.contains('playing')) fallback(); }, 9000);
 }
 
