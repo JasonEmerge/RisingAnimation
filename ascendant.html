@@ -57,13 +57,13 @@
     display:flex;align-items:center;justify-content:center;overflow:hidden;
     will-change:height;transition:none}
   #hero.settling{transition:height 2.3s cubic-bezier(.22,.61,.21,1)}
+  #heroScale{width:100%;height:100%;transform-origin:center 46%;will-change:transform}
   #hero video{width:100%;height:100%;object-fit:contain;display:block;opacity:0;
-    transform-origin:center 46%;
     transition:opacity .9s ease}
   #hero.playing video{opacity:1}
-  #hero.bloom video{transform:scale(.06);transition:opacity .5s ease}
-  #hero.bloom.grown video{transform:scale(1);
-    transition:opacity .5s ease, transform 3s cubic-bezier(.20,.62,.26,1)}
+  #hero.bloom #heroScale{transform:scale(.06)}
+  #hero.bloom.grown #heroScale{animation:bloomGrow 3s cubic-bezier(.20,.62,.26,1) forwards}
+  @keyframes bloomGrow{from{transform:scale(.06)}to{transform:scale(1)}}
 
   /* ---------- rising content panel ---------- */
   #content{position:fixed;top:0;left:0;right:0;z-index:19;background:var(--bg);
@@ -155,7 +155,7 @@
 <div id="transit"><video id="transitVid" muted playsinline preload="auto"></video></div>
 <div id="veil"></div>
 
-<div id="hero"><video id="signVid" muted playsinline preload="auto"></video></div>
+<div id="hero"><div id="heroScale"><video id="signVid" muted playsinline preload="auto"></video></div></div>
 
 <div id="content">
   <div class="wrap">
@@ -195,7 +195,7 @@
   <a href="#"><svg viewBox="0 0 24 24"><circle cx="12" cy="8.5" r="3.5"/><path d="M5 19.5c1.2-3.4 3.9-5 7-5s5.8 1.6 7 5"/></svg>Account</a>
 </nav>
 
-<div id="stamp">ASCENDANT · v2.1 · slow birth live</div>
+<div id="stamp">ASCENDANT · v2.2 · true 3s growth</div>
 
 <script>
 /* =====================================================================
@@ -369,12 +369,10 @@ function playTransition(){
     const d = (tVid.duration && isFinite(tVid.duration)) ? tVid.duration : 2;
     if (tVid.currentTime >= d * 0.76){
       tVid.removeEventListener('timeupdate', onTU);
-      tVid.pause();                                  // frozen on the flash
-      setTimeout(() => {
-        playSign(true);                              // born tiny in the light
-        transit.classList.add('fading');
-        setTimeout(() => { transit.classList.remove('on'); transit.classList.remove('fading'); }, 500);
-      }, 900);
+      tVid.pause();                                  // frame locks on the flash
+      playSign(true);                                // and the sign is born NOW, already moving
+      transit.classList.add('fading');
+      setTimeout(() => { transit.classList.remove('on'); transit.classList.remove('fading'); }, 500);
     }
   };
   tVid.addEventListener('timeupdate', onTU);
