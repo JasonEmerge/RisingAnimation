@@ -192,7 +192,7 @@
   <a href="#"><svg viewBox="0 0 24 24"><circle cx="12" cy="8.5" r="3.5"/><path d="M5 19.5c1.2-3.4 3.9-5 7-5s5.8 1.6 7 5"/></svg>Account</a>
 </nav>
 
-<div id="stamp">ASCENDANT · v3.0 · lagna framework</div>
+<div id="stamp">ASCENDANT · v3.1 · seamless rise</div>
 
 <script>
 /* =====================================================================
@@ -510,10 +510,10 @@ function scheduleSettle(){
     // looping clips keep looping under the risen page; settle after one pass
     setTimeout(settle, Math.max(1000, dur * 1000));
   } else {
-    sVid.addEventListener('ended', settle, { once:true }); // holds final frame
-    // iOS belt and braces: some Safari builds delay or drop 'ended'
+    sVid.addEventListener('ended', settle, { once:true }); // backup if timeupdate lags
+    // the page begins rising while the final pose is still completing — seamless
     sVid.addEventListener('timeupdate', function te(){
-      if (sVid.currentTime >= dur - 0.15){
+      if (sVid.currentTime >= dur - 0.6){
         sVid.removeEventListener('timeupdate', te);
         settle();
       }
@@ -544,9 +544,8 @@ function settle(){
 
   if (reduced){ finish(); return; }
 
-  // cinematic beat: the final pose holds alone on screen before anything moves
-  const HOLD_MS = settledMode ? 0 : 900;
-  setTimeout(() => {
+  // no pause: the rise flows straight out of the animation's final moment
+  {
     // then one slow glide: the animation moves up as the page rises beneath it
     content.style.transform = 'translateY(' + window.innerHeight + 'px)';
     content.classList.add('rising');
@@ -558,7 +557,7 @@ function settle(){
     }));
     content.addEventListener('transitionend', finish, { once:true });
     setTimeout(finish, 3000);                        // safety
-  }, HOLD_MS);
+  }
 }
 
 function once(fn){ let ran=false; return () => { if(!ran){ ran=true; fn(); } }; }
